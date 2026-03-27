@@ -4,18 +4,23 @@ const express = require('express');
 //to use express into our app
 const app = express();
 
-//request handlers
+//this will match to all only POST method
+app.post("/users",(req,res)=>{
+    res.send("Data received Succesfully");
+})
+
+//this will match to all only GET method
+app.get("/users",(req,res)=>{
+    res.send({firstName:"Pranshu",LastName:"Gupta"});
+})
+
+app.delete("/users",(req,res)=>{
+    res.send("Data Deleted Successfully");
+})
+
+//this will match to all HTTP methods
 app.use("/main",(req,res)=>{
     res.send("Server is at main");
-});
-
-
-app.use("/dashboard",(req,res)=>{
-    res.send("Visiting dashboard!!!");
-});
-
-app.use("/",(req,res)=>{
-    res.send("server started at port 3007");
 });
 
 //we need to listen to our app
