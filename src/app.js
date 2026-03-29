@@ -4,6 +4,10 @@ const express = require('express');
 //to use express into our app
 const app = express();
 
+app.use("/users/:userId/:name/:password",(req,res)=>{
+    res.send(req.params);
+})
+
 //this will match to all only POST method
 app.post("/users",(req,res)=>{
     res.send("Data received Succesfully");
@@ -19,7 +23,7 @@ app.delete("/users",(req,res)=>{
 })
 
 //this will match to all HTTP methods
-app.use("/main",(req,res)=>{
+app.use("/users",(req,res)=>{
     res.send("Server is at main");
 });
 
