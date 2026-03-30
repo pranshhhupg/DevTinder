@@ -1,33 +1,59 @@
 //to use express into our project
 const express = require('express');
+const {authAdmin} = require('./middlewares/auth');
 
 //to use express into our app
 const app = express();
 
-app.use("/users/:userId/:name/:password",(req,res)=>{
-    res.send(req.params);
+app.use("/getUserData",(req,res,next)=>{
+    console.log("1st RH");
+    next();
 })
 
-//this will match to all only POST method
-app.post("/users",(req,res)=>{
-    res.send("Data received Succesfully");
+app.get("/getUserData/123",(req,res)=>{
+    console.log("2nd RH");
+    res.send("Succesfully executed");
 })
 
-//this will match to all only GET method
-app.get("/users",(req,res)=>{
-    res.send({firstName:"Pranshu",LastName:"Gupta"});
-})
+// app.use("/admin",authAdmin);
 
-app.delete("/users",(req,res)=>{
-    res.send("Data Deleted Successfully");
-})
+// app.get("/admin/getAllData",(req,res)=>{
+//     res.send("Data received");
+// })
 
-//this will match to all HTTP methods
-app.use("/users",(req,res)=>{
-    res.send("Server is at main");
-});
+// app.delete("/admin/deleteData",(req,res)=>{
+//     res.send("Data deleted");
+// })
 
-//we need to listen to our app
+// app.use("/users",(req,res,next)=>{
+//     console.log("1st Route Handler");
+//     next();
+// })
+
+// app.delete("/users",(req,res,next)=>{
+//     res.send("onto next Route Handler");
+// })
+
+// //this will match to all only POST method
+// app.post("/users",(req,res)=>{
+//     res.send("Data received Succesfully");
+// })
+
+// //this will match to all only GET method
+// app.get("/users",(req,res)=>{
+//     res.send({firstName:"Pranshu",LastName:"Gupta"});
+// })
+
+// app.delete("/users",(req,res)=>{
+//     res.send("Data Deleted Successfully");
+// })
+
+// //this will match to all HTTP methods
+// app.use("/users",(req,res)=>{
+//     res.send("Server is at main");
+// });
+
+// //we need to listen to our app
 app.listen(3007, ()=>{
     console.log("Starting server at port 3007");
 });

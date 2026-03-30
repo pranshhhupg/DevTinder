@@ -16,3 +16,10 @@
 -Install postman app and make a workspace/collection > test GET API call
 -Write logic to handle GET,POST,PATCH,DELETE API Calls and test them on Postman
 -Explore routing and use of ?, +, (), + in the routes
+-params in route handler
+-reading dynamic routes
+
+-next();
+-Middleware
+-dummy auth middleware for user and admin
+-Error handling
