@@ -23,3 +23,11 @@
 -Middleware
 -dummy auth middleware for user and admin
 -Error handling
+
+-create a free cluster on mongoDB official website(Mongo Atlas)
+-Install mongoose library
+-Connect your application to the Database "Connection-url/devTinder"
+-Call the connectDB function and connect to database before starting application on 3007
+-Create a userSchema and userModel
+-Create POST/signup API to add data to database
+-Puse some documents using API calls from postman

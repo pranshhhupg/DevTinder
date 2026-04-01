@@ -1,59 +1,38 @@
 //to use express into our project
 const express = require('express');
-const {authAdmin} = require('./middlewares/auth');
-
+//connect to database
+const connectDB = require('./config/database');
 //to use express into our app
 const app = express();
+const User = require('./models/user');
 
-app.use("/getUserData",(req,res,next)=>{
-    console.log("1st RH");
-    next();
-})
+app.post("/signup", async (req,res)=>{
+    //creating a new instance of the user Model
+    const user = new User({
+        firstName : "Mahendra Singh",
+        lastNamee : "Dhoni",
+        emailIdd : "msd007@gmail.com",
+        gender : "male",
+        age : 44,
+        password : "msdreal@123",
+    });
 
-app.get("/getUserData/123",(req,res)=>{
-    console.log("2nd RH");
-    res.send("Succesfully executed");
-})
-
-// app.use("/admin",authAdmin);
-
-// app.get("/admin/getAllData",(req,res)=>{
-//     res.send("Data received");
-// })
-
-// app.delete("/admin/deleteData",(req,res)=>{
-//     res.send("Data deleted");
-// })
-
-// app.use("/users",(req,res,next)=>{
-//     console.log("1st Route Handler");
-//     next();
-// })
-
-// app.delete("/users",(req,res,next)=>{
-//     res.send("onto next Route Handler");
-// })
-
-// //this will match to all only POST method
-// app.post("/users",(req,res)=>{
-//     res.send("Data received Succesfully");
-// })
-
-// //this will match to all only GET method
-// app.get("/users",(req,res)=>{
-//     res.send({firstName:"Pranshu",LastName:"Gupta"});
-// })
-
-// app.delete("/users",(req,res)=>{
-//     res.send("Data Deleted Successfully");
-// })
-
-// //this will match to all HTTP methods
-// app.use("/users",(req,res)=>{
-//     res.send("Server is at main");
-// });
-
-// //we need to listen to our app
-app.listen(3007, ()=>{
-    console.log("Starting server at port 3007");
+    try{
+        await user.save();
+        res.send("Data succesfully added");
+    }
+    catch(err){
+        res.status(400).send("Error occured " + err.message);
+    }
 });
+
+// first connect the DB, then start the server
+connectDB().then(()=>{
+    console.log("Database connection estabhlished");
+    app.listen(3007, ()=>{
+        console.log("Starting server at port 3007");
+    });    
+}).catch(err => {
+    console.error("Database cannot be connected!! :" + err.message);
+});
+
