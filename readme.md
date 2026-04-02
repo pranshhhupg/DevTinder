@@ -31,3 +31,14 @@
 -Create a userSchema and userModel
 -Create POST/signup API to add data to database
 -Puse some documents using API calls from postman
+
+
+-JS object vs JSON Object (Difference)
+-Add the express.json middleware to your app
+-Make your signup API Dynamic to receive data from the end user
+-User.findOne with duplicate emailIDs, which object returned.
+-API - get user by email.
+-API - FEED API - GET/feed - get all the users from the database.
+-API - Update a user
+-Explore the Mongoose Documentation for Model methods
+-API - create Update and delete APIs
