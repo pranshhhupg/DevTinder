@@ -12,14 +12,30 @@ app.use(express.json());
 
 //Get the data from user and save it into DB
 app.post("/signup", async (req,res)=>{
-    //creating a new instance of the user Model
-    const user = new User(req.body);
+
     try{
-        await user.save();
+
+        const ALLOWED_INSERTION = ["firstName","lastName","emailId","password","age","gender", "hobbies"];
+        const isInsertionAllowed = Object.keys(req.body).every((k)=>ALLOWED_INSERTION.includes(k));
+
+        if(!isInsertionAllowed){
+            throw new Error("Insertion not allowed")
+        }
+
+        if(req.body?.hobbies.length>10){
+            throw new Error("Skill limit exceeded 10");
+        }
+
+        //creating a new instance of the user Model
+        const user = new User(req.body);
+        
+        const savedUser = await user.save();
+        
+        console.log(savedUser);
         res.send("Sucessfully Saved the JSON Data");
     }
     catch(err){
-        res.status(400).send("Data transmission failed!");
+        res.status(400).send("Data transmission failed! " + err.message);
     }
     
 });
@@ -56,26 +72,30 @@ app.delete("/users", async (req,res)=>{
     }
 });
 
-app.patch("/users",async (req,res)=>{
-    const userId = req.body.id;
+app.patch("/users/:userID",async (req,res)=>{
+    const userId = req.params?.id;
+    const data = req.body;
 
     try{
-        const updatedUser = await User.findByIdAndUpdate(userId,
-            {
-                firstName : "Virat",
-                lastName : "Kohli",
-                emailId : "viratkohliLovesAnushka",
-            },
-            {
-                returnDocument : "before"
-            }
-        );
+        const ALLOWED_UPDATES = ["firstName","lastName","password","age","gender","photoUrl","about","hobbies"];
+        const isUpdateAllowed = Object.keys(data).every((k)=>ALLOWED_UPDATES.includes(k));
+
+        if(!isUpdateAllowed){
+            throw new Error("Update not allowed")
+        }
+
+        if(data?.skills.length>10){
+            throw new Error("Skill limit exceeded 10");
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId,data);
+
         console.log(updatedUser);
         if(!updatedUser) res.status(404).send("User not Found!");
         res.send("Successfully Updated the data");
     }
     catch(err){
-        res.status(400).send("Something went wrong");
+        res.status(400).send("UPDATE FAILED : " + err.message);
     }
 });
 

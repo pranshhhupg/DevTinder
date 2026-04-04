@@ -42,3 +42,12 @@
 -API - Update a user
 -Explore the Mongoose Documentation for Model methods
 -API - create Update and delete APIs
+
+-Explore schema properties of document
+-add required, unique, min, max etc;
+-create custom validate function for gender
+-Improve the DB Schema - Put the custom validation function in each field
+-Add timestamps to userSchema
+-Add API level validation on patch and post APIs
+-Use validator
+-Explore validator library like isEmail, isStrongPassword etc.
