@@ -51,3 +51,17 @@
 -Add API level validation on patch and post APIs
 -Use validator
 -Explore validator library like isEmail, isStrongPassword etc.
+-///Never trust req.body///
+
+-validate data in signup/post API
+-Install Bcrypt package
+-Create a password Hash Save the users with  encrypted password
+-Create Login API
+-Compare password using bcrypt.compare and throw errors if email or password is invalid
+
+-install jsonwebtoken and cookie-parser
+-create get/profile API
+-create a JWT Token and send it back to user in cookies
+-read the cookies insider your profile API and find the logged in user
+-add the userAuth middlewarein profile API
+-set the expiry of JWT and cookies to 7 days

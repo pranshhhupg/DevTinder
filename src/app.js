@@ -5,31 +5,51 @@ const connectDB = require('./config/database');
 //to use express into our app
 const app = express();
 const User = require('./models/user');
+const {validateSignUpUser} = require('./utils/validation');
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const { userAuth } = require('./middlewares/auth');
 
 //using express.json() as middleware to convert the incoming data type into JSON
 
 app.use(express.json());
+app.use(cookieParser());
 
 //Get the data from user and save it into DB
 app.post("/signup", async (req,res)=>{
 
     try{
-
-        const ALLOWED_INSERTION = ["firstName","lastName","emailId","password","age","gender", "hobbies"];
-        const isInsertionAllowed = Object.keys(req.body).every((k)=>ALLOWED_INSERTION.includes(k));
-
-        if(!isInsertionAllowed){
-            throw new Error("Insertion not allowed")
-        }
-
-        if(req.body?.hobbies.length>10){
-            throw new Error("Skill limit exceeded 10");
-        }
+        const {firstName,lastName,emailId,password,age,gender,about,hobbies,photoUrl} = req.body;
+        //validate data
+        validateSignUpUser(req);
+        
+        //Encrypt the password
+        const passwordHash = await bcrypt.hash(password,10);
+        console.log(passwordHash);
 
         //creating a new instance of the user Model
-        const user = new User(req.body);
+        const user = new User({
+            firstName,
+            lastName,
+            emailId,
+            password : passwordHash,
+            age,
+            gender,
+            hobbies,
+            about,
+            photoUrl,
+        });
         
         const savedUser = await user.save();
+
+        //create JWT-token
+        const token = await user.getJWT();
+
+        //save JWT in cookie
+        res.cookie("token", token, {
+            expires: new Date(Date.now() + 24 * 3600000) // cookie will be removed after 24 hour
+        });
         
         console.log(savedUser);
         res.send("Sucessfully Saved the JSON Data");
@@ -38,6 +58,48 @@ app.post("/signup", async (req,res)=>{
         res.status(400).send("Data transmission failed! " + err.message);
     }
     
+});
+
+app.get("/login", async (req,res)=>{
+    try{
+        const {emailId, password} = req.body;
+
+        const user = await User.findOne({emailId : emailId});
+
+        if(!user){
+            throw new Error("Invalid Credentials!");
+        }
+        const passwordPresentInDb = password;
+        const isPasswordCorrect = await user.validatePassword(passwordPresentInDb);
+
+        if(!isPasswordCorrect){
+            throw new Error("Invalid Credentials!");
+        }
+        else{
+            //password is correct log-in the user by generating JWT and wrapping it inside cookie
+            //create a JWT Token
+            const token = await user.getJWT();
+
+            //add the token to cookies
+            res.cookie("token", token);
+        }
+        res.send("Logged-in Successfully!");
+    }
+    catch(err){
+        res.status(400).send("Error logging In : " + err.message);
+    }
+});
+
+app.get("/profile", userAuth, async (req,res)=>{
+    try{
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        res.send(user);
+    }
+    catch(err){
+        res.status(400).send("Error occured : "+err.message);
+    }
+
 });
 
 //Search the Database with the data sent by user
