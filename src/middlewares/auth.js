@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-const userAuth = (req,res,next) => {
+const userAuth = async (req,res,next) => {
     try{
         const cookies = req.cookies;
         const {token} = cookies;
@@ -16,8 +17,10 @@ const userAuth = (req,res,next) => {
         if(!userId){
             throw new Error("User not found!");
         }
-
+        
+        const user = await User.findById(userId);
         req.userId = userId;
+        req.user = user;
         next();
     }
     catch(err){

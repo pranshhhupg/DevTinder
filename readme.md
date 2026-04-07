@@ -65,3 +65,14 @@
 -read the cookies insider your profile API and find the logged in user
 -add the userAuth middlewarein profile API
 -set the expiry of JWT and cookies to 7 days
+
+-Explore tinder APIs
+-Create a list all API you can think in DevTinder
+-Group multiple routes under respective routers
+-Create routes folder for managing auth, profile, request routers.  
+-Import these routers in app.js
+-Create POST/logout API
+-Create PATCH/profile/edit
+-Create PATCH/profile/password
+-Make sure you validated all data in every POST, PATCH API.
+-Test all APIs
