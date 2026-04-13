@@ -76,3 +76,15 @@
 -Create PATCH/profile/password
 -Make sure you validated all data in every POST, PATCH API.
 -Test all APIs
+
+-Create ConnectionRequestSchema
+-create Connection Request API in requests.js
+-Properly validate the data
+-$or and $and query in mongoose. 
+-Read more about indexes and compound indexes in MongoDB
+-Why do we need indexes in DB?
+-Adv and Disadv. of creating indexes?
+-schema.pre("save", function(){});
+
+-Write API for requestRouter.post("/request/review/:action/:requestId)
+-Thought Process - POST vs GET

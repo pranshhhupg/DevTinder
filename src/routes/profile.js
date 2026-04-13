@@ -47,9 +47,8 @@ profileRouter.patch("/profile/password", userAuth, async (req,res) => {
     try{    
         const user = req.user;
         const passwordInputGivenByUser = req.body.password;
-        const newPassword = req.body.newPassword;
 
-        validateNewPassword(newPassword);
+        validateNewPassword(passwordInputGivenByUser);
 
         const match = await user.validatePassword(passwordInputGivenByUser);
 
