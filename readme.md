@@ -88,3 +88,7 @@
 
 -Write API for requestRouter.post("/request/review/:action/:requestId)
 -Thought Process - POST vs GET
+
+-Logic for get/FEED API
+-Explore $nin, $ne etc..
+-Add pagination to your /feed API
