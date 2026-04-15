@@ -6,9 +6,14 @@ const express = require('express');
 const connectDB = require('./config/database');
 //to use express into our app
 const app = express();
+const cors = require("cors");
 
 //using express.json() as middleware to convert the incoming data type into JSON
 
+app.use(cors({
+    origin : "http://localhost:5173",
+    credentials : true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 
