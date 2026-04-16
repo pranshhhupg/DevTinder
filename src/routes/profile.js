@@ -4,13 +4,13 @@ const User = require('../models/user');
 const { validateEditData, validateNewPassword } = require('../utils/validation');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const cors = require('cors');
 
 const profileRouter = express.Router();
 
 profileRouter.get("/profile/view", userAuth, async (req,res)=>{
     try{
-        const userId = req.userId;
-        const user = await User.findById(userId);
+        const user = req.user;
         res.send(user);
     }
     catch(err){
@@ -47,6 +47,7 @@ profileRouter.patch("/profile/password", userAuth, async (req,res) => {
     try{    
         const user = req.user;
         const passwordInputGivenByUser = req.body.password;
+        const newPassword = req.body.newPassword;
 
         validateNewPassword(passwordInputGivenByUser);
 

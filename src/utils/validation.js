@@ -15,7 +15,7 @@ const validateSignUpUser = (req) => {
     if(age<18){
         throw new Error("Less than 18 Year Old are not allowed!");
     }
-    if(hobbies.length>10){
+    if(hobbies && hobbies.length>10){
         throw new Error("Hobbies exceeded above 10");
     }
 };

@@ -12,7 +12,7 @@ authRouter.post("/signup", async (req,res)=>{
         const {firstName,lastName,emailId,password,age,gender,about,hobbies,photoUrl} = req.body;
         //validate data
         validateSignUpUser(req);
-        
+
         //Encrypt the password
         const passwordHash = await bcrypt.hash(password,10);
         // console.log(passwordHash);
@@ -41,7 +41,9 @@ authRouter.post("/signup", async (req,res)=>{
         });
         
         console.log(savedUser);
-        res.send("Sucessfully Saved the JSON Data");
+        res.send({message :"Sucessfully Saved the JSON Data",
+            data : savedUser}
+        );
     }
     catch(err){
         res.status(400).send("Data transmission failed! " + err.message);
@@ -56,13 +58,13 @@ authRouter.post("/login", async (req,res)=>{
         const user = await User.findOne({emailId : emailId});
 
         if(!user){
-            throw new Error("Invalid Credentials!");
+            throw new Error("User not found! Please Sign Up");
         }
         const passwordPresentInDb = password;
         const isPasswordCorrect = await user.validatePassword(passwordPresentInDb);
 
         if(!isPasswordCorrect){
-            throw new Error("Invalid Credentials!");
+            throw new Error("Invalid Password");
         }
         else{
             //password is correct log-in the user by generating JWT and wrapping it inside cookie
@@ -77,7 +79,7 @@ authRouter.post("/login", async (req,res)=>{
         });
     }
     catch(err){
-        res.status(400).send("Error logging In : " + err.message);
+        res.status(400).send(err.message);
     }
 });
 

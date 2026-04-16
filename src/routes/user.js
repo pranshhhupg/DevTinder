@@ -70,7 +70,7 @@ userRouter.get("/user/feed", userAuth, async(req,res)=>{
 
         //pagination
         const page = (req.query.page) || 1;
-        let limit = (req.query.limit) || 2;
+        let limit = (req.query.limit) || 10;
         limit = limit > 20 ? 20 : limit;
         const skip = (page-1)*limit;
 

@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
     },
     lastName : {
         type : String,
-        minLength : 2,
         maxLength : 100,
     },
     emailId : {
@@ -30,18 +29,21 @@ const userSchema = new mongoose.Schema({
     },
     password : {
         type : String,
+        required: true,
         validate(value){
-            if(!validator.isStrongPassword(value)){
+            if(!value || !validator.isStrongPassword(value)){
                 throw new Error("Enter strong password");
             }
         }
     },
     age : {
         type : Number,
+        default : null,
         min : 18
     },
     gender : {
         type : String,
+        default : "other",
         enum : {
             values : ["male","female","other","Male","Female","Others"],
             message : '{VALUE} is not a valid gender type.'
@@ -68,6 +70,7 @@ const userSchema = new mongoose.Schema({
     },
     hobbies : {
         type : [String],
+        default : [""]
     }
 },
 {
