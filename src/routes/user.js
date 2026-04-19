@@ -108,4 +108,27 @@ userRouter.get("/user/feed", userAuth, async(req,res)=>{
     
 });
 
+userRouter.get("/user/request/all", userAuth, async (req,res)=>{
+    try{
+         const loggedInUser = req.user;
+
+        const user = await ConnectionRequest.find({
+            fromUserId : loggedInUser._id,
+            status: { $in: ["interested", "rejected", "accepted"] }
+        }).populate("toUserId", USER_DATA);
+        
+        if(!user){
+            res.send("No user found!");
+        }
+
+        res.json({message : "User fetched Successfully for " + loggedInUser.firstName,
+            data : user
+        });
+
+    }catch(err){
+        console.log("Error occured : " + err.message);
+    }
+
+});
+
 module.exports = userRouter;

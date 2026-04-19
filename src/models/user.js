@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema({
     },
     about : {
         type : String,
-        maxLength : 80,
+        maxLength : 300,
         default : "Hi there! I am using DevTinder"
     },
     hobbies : {

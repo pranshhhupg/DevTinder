@@ -3,11 +3,7 @@ const User = require("../models/user");
 
 const userAuth = async (req, res, next) => {
     try {
-        // ✅ Allow preflight
-        if (req.method === "OPTIONS") {
-            return next();
-        }
-
+    
         const { token } = req.cookies || {};
 
         if (!token) {
