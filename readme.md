@@ -92,3 +92,48 @@
 -Logic for get/FEED API
 -Explore $nin, $ne etc..
 -Add pagination to your /feed API
+
+# DEPLOYMENT
+
+-Signup on AWS
+-Launch instance
+-Connect to instance using git bash and AWS keys
+-Install exact same node version when connected to ec2 instance.
+-Do git clone
+-go to frontend using cd devTinder---FRONTEND
+-For frontend
+    -npm install
+    -npm run build
+    -sudo apt update
+    -sudo apt install nginx
+    -sudo systemctl start nginx
+    -sudo systemctl enable nginx
+    -COPY CODE FROM dist(build files) to /var/www/html
+    -sudo scp -r  dist/*/ /var/www/html.
+    -Enable port 80 on your instance.
+
+-For backend
+    -allowed ec2 instance public IP on mongodb server
+    -install pm2 on instance
+    -npm install pm2 -g
+    -pm2 start npm --name "devTinder-backend" -- start
+    -Commands you can execute in pm2
+    -pm2 logs, pm2 list, pm2 flush <processName>, pm2 stop <processName>, pm2 delete <processName>
+
+    FRONTEND : http://http://13.127.24.219
+    BACKEND : http://http://13.127.24.219:3007 and we need to map it to http://13.127.24.219/api/
+
+    nginx config : sudo nano /etc/nginx/sites-available/default
+
+    server name : http://13.127.24.219;
+
+    location /api/ {
+        proxy_pass http://localhost:3007/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    after doing it restart nginx : sudo systemctl restart nginx
