@@ -103,20 +103,20 @@
 -go to frontend using cd devTinder---FRONTEND
 -For frontend
     -npm install
-    -npm run build
+    -*npm run build
     -sudo apt update
     -sudo apt install nginx
     -sudo systemctl start nginx
     -sudo systemctl enable nginx
     -COPY CODE FROM dist(build files) to /var/www/html
-    -sudo scp -r  dist/*/ /var/www/html.
+    -*sudo scp -r  dist/*/ /var/www/html.
     -Enable port 80 on your instance.
 
 -For backend
     -allowed ec2 instance public IP on mongodb server
     -install pm2 on instance
-    -npm install pm2 -g
-    -pm2 start npm --name "devTinder-backend" -- start
+    -*npm install pm2 -g
+    -*pm2 start npm --name "devTinder-backend" -- start
     -Commands you can execute in pm2
     -pm2 logs, pm2 list, pm2 flush <processName>, pm2 stop <processName>, pm2 delete <processName>
 
@@ -136,4 +136,22 @@
         proxy_cache_bypass $http_upgrade;
     }
 
+        🔧 Replace your / block with this:
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+        💡 This line is the magic
+        try_files $uri $uri/ /index.html;
+
+        👉 Means:
+
+        If file exists → serve it
+        Else → fallback to index.html (React handles route)
+        🔁 Then restart Nginx
+        sudo nginx -t
+        sudo systemctl restart nginx
+
     after doing it restart nginx : sudo systemctl restart nginx
+    -Modify the base url to /api in frontend
+
+- WE NEED TO ONLY CONFIGURE NGINX ONCE

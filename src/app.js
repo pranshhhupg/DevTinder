@@ -1,5 +1,5 @@
 const cookieParser = require('cookie-parser');
-
+require('dotenv').config()
 //to use express into our project
 const express = require('express');
 //connect to database
@@ -32,7 +32,7 @@ app.use("/", userRouter);
 // first connect the DB, then start the server
 connectDB().then(()=>{
     console.log("Database connection estabhlished");
-    app.listen(3007, ()=>{
+    app.listen(process.env.PORT, ()=>{
         console.log("Starting server at port 3007");
     });    
 }).catch(err => {
